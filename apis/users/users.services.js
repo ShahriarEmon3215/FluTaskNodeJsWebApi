@@ -120,5 +120,35 @@ module.exports = {
                
            }
        )
+    },
+
+    getAllUsersByProjectId: (callback)=>{
+        db.query(
+           `select * from users`,
+           [],
+           (error, result) => {
+               if (error) {
+                   return callback(error)
+               }else{
+                   return callback(error, result[0])
+               }
+               
+           }
+       )
+    },
+
+    getAllUsers: (callback)=>{
+        db.query(
+            `SELECT id,username,email FROM users`,
+           [],
+           (error, result) => {
+               if (error) {
+                   return callback(error)
+               }else{
+                   return callback(error, result)
+               }
+               
+           }
+       )
     }
 }

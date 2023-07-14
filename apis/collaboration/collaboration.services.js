@@ -37,7 +37,7 @@ module.exports = {
     },
 
 
-    getCollaboratorsByProjectAndUserId: (user_id, callback) => {
+    getCollaboratorsByUserId: (user_id, callback) => {
         db.query(
             `select * from project_vs_user where user_id=?`,
             [user_id],
@@ -50,6 +50,19 @@ module.exports = {
 
             }
         )
-    }
+    },
+    getCollaboratorsByProjectId: (project_id, callback) => {
+        db.query(
+            `select * from project_vs_user where project_id=?`,
+            [project_id],
+            (error, result) => {
+                if (error) {
+                    return callback(error)
+                } else {
+                    return callback(error, result)
+                }
 
+            }
+        )
+    }
 }
