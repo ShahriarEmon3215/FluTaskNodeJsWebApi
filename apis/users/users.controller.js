@@ -47,13 +47,16 @@ module.exports = {
     },
 
     getUserByEmail: (req, res) => {
-        const email = req.params.email;
+        const email = req.body.email;
         getUserByEmail(email, (error, result)=>{
             if(error){
-                return;
+                return res.status(400).json({
+                    success: false,
+                    message: error,
+                })
             }
             if(!result){
-                return res.json({
+                return res.status(401).json({
                     success: false,
                     message: "empty data",
                 })
@@ -61,7 +64,11 @@ module.exports = {
             return res.json({
                 success: true,
                 message: "successfull",
-                result: result,
+                result: {
+                    "id": result['id'],
+                    "username": result['username'],
+                    "email": result['email'],
+                },
             })
         })
     },

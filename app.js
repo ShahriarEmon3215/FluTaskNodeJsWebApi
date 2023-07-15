@@ -12,7 +12,7 @@ app.use('/api/user', userRouter)
 app.use('/api/project', projectRouter)
 app.use('/api/task', taskRouter)
 app.use('/api/taskPlan', taskPlanRouter)
-app.use('/api/collaboration', collaborationRouter)
+app.use('/api/collaboration', collaborationRouter) 
 
 app.listen(2023, ()=>{
     console.log("Server is up and runnng at port : ",  2023)

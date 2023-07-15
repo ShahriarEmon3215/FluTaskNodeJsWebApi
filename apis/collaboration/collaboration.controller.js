@@ -19,7 +19,7 @@ module.exports = {
 
             create(req.body, (error, result) => {
                 if (error) {
-                    return res.status(422).json({ success: false, message: error.sqlMessage })
+                    return res.status(401).json({ success: false, message: error.sqlMessage })
                 }
                 return res.status(200).json({
                     success: true,
@@ -130,7 +130,7 @@ module.exports = {
             collaboratorsList = collaborators
 
 
-            // get all projects list existing in database
+
             getAllUsers((error, users) => {
                 if (error) {
                     return res.status(401).json({
@@ -141,7 +141,7 @@ module.exports = {
                 usersList = users
                 console.log(users.length)
 
-                // loop on filtered collaboration list to get collaborated projects
+               
                 for (var i = 0; i < collaboratorsList.length; i++) {
                     for (var j = 0; j < usersList.length; j++) {
                         if (usersList[j]['id'] == collaboratorsList[i]['user_id']) {
@@ -150,7 +150,7 @@ module.exports = {
                     }
                 }
 
-                // return final projects list which projects matches with user 
+
                 return res.json({
                     success: true,
                     message: "Data loaded successfully",
@@ -158,7 +158,6 @@ module.exports = {
                 })
             })
         })
-
 
     },
 }
