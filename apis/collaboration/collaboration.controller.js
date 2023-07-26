@@ -158,6 +158,5 @@ module.exports = {
                 })
             })
         })
-
     },
 }

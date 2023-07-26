@@ -4,14 +4,12 @@ const app = express()
 const userRouter = require('./apis/users/users.routes.js')
 const projectRouter = require('./apis/projects/projects.routes.js')
 const taskRouter = require('./apis/tasks/tasks.routes.js')
-const taskPlanRouter = require('./apis/task_plan/task.plan.routes.js')
 const collaborationRouter = require('./apis/collaboration/collaboration.routes.js')
 
 app.use(express.json())
 app.use('/api/user', userRouter)
 app.use('/api/project', projectRouter)
 app.use('/api/task', taskRouter)
-app.use('/api/taskPlan', taskPlanRouter)
 app.use('/api/collaboration', collaborationRouter) 
 
 app.listen(2023, ()=>{
