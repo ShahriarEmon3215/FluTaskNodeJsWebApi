@@ -35,4 +35,22 @@ module.exports = {
             }
         )
     },
+
+    updateTask: (id, bodyData , callback) => {
+        db.query(
+            `update task set status=? where id=?`,
+            [
+                bodyData.status,
+                id
+            ],
+            (error, result, fields) => {
+                if (error) {
+                    return callback(error)
+                }
+
+                return callback(null,  result)
+            }
+
+        )
+    }
 }
