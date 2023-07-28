@@ -1,4 +1,4 @@
-const { create, getTasks, updateTask } = require("./tasks.services.js");
+const { create, getTasks, updateTask, updateTaskCollaboration } = require("./tasks.services.js");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -68,6 +68,24 @@ module.exports = {
     var tId = req.params.id;
     var body = req.body;
     updateTask(tId, body, (error, result) => {
+      if (error) {
+        return res.json({
+          success: false,
+          message: "Someting went wrong!",
+        });
+      }
+
+      return res.json({
+        success: true,
+        message: "Updated",
+      });
+    });
+  },
+
+  updateTaskCollaboration: (req, res) => {
+    var tId = req.params.id;
+    var body = req.body;
+    updateTaskCollaboration(tId, body, (error, result) => {
       if (error) {
         return res.json({
           success: false,

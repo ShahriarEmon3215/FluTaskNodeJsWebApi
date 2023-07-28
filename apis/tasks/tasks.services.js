@@ -52,5 +52,25 @@ module.exports = {
             }
 
         )
+    },
+
+    updateTaskCollaboration: (id, bodyData , callback) => {
+        db.query(
+            `update task set user_id=?, username=?, collaboration_date=? where id=?`,
+            [
+                bodyData.user_id,
+                bodyData.username,
+                bodyData.collaboration_date,
+                id
+            ],
+            (error, result, fields) => {
+                if (error) {
+                    return callback(error)
+                }
+
+                return callback(null,  result)
+            }
+
+        )
     }
 }
