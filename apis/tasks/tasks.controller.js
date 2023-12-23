@@ -1,44 +1,27 @@
-const { create, getTasks, updateTask, updateTaskCollaboration } = require("./tasks.services.js");
-const jwt = require("jsonwebtoken");
+const {
+  create,
+  getTasks,
+  updateTask,
+  updateTaskCollaboration,
+} = require("./tasks.services.js");
 
 module.exports = {
   createTask: (req, res) => {
-    var token = "";
-    const authHeader = String(req.headers["authorization"] || "");
-    if (authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7, authHeader.length);
-      if (!token)
+    create(req.body, (error, result) => {
+      if (error) {
         return res
-          .status(401)
-          .json({ success: false, message: "No token provided." });
-
-      jwt.verify(token, "jwt3215", function (err, decoded) {
-        if (err)
-          return res
-            .status(500)
-            .json({ success: false, message: "Failed to authenticate token." });
+          .status(422)
+          .json({ success: false, message: error.sqlMessage });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Task created Successfully",
+        result: {
+          project: req.body.task_name,
+          id: result.insertId,
+        },
       });
-
-      create(req.body, (error, result) => {
-        if (error) {
-          return res
-            .status(422)
-            .json({ success: false, message: error.sqlMessage });
-        }
-        return res.status(200).json({
-          success: true,
-          message: "Task created Successfully",
-          result: {
-            project: req.body.task_name,
-            id: result.insertId,
-          },
-        });
-      });
-    } else {
-      return res
-        .status(401)
-        .json({ success: false, message: "No token provided." });
-    }
+    });
   },
 
   getTasksByProjectId: (req, res) => {
@@ -46,13 +29,13 @@ module.exports = {
     getTasks(pId, (error, result) => {
       if (error) {
         return res.json({
-            success: false,
+          success: false,
           message: "Someting went wrong!",
         });
       }
       if (!result) {
         return res.json({
-            success: false,
+          success: false,
           message: "Empty data",
         });
       }
