@@ -6,6 +6,7 @@ const {
   deleteUser,
   login,
   getUserByEmail,
+  refreshToken,
 } = require("./users.controller.js");
 const router = require("express").Router();
 const checkLogin = require("../../middlewares/checkLogin.js");
@@ -17,5 +18,6 @@ router.post("/getUserByEmail", checkLogin, getUserByEmail);
 router.post("/updateUser", checkLogin, updateUser);
 router.post("/deleteUser", checkLogin, deleteUser);
 router.post("/login", login);
+router.get("/refreshToken", refreshToken);
 
 module.exports = router;

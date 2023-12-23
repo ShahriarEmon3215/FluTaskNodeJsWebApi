@@ -20,7 +20,7 @@ const errorHandler = (err, req, res, next) => {
     return next(err);
   }
   res.status(500).json({
-    sucess: false,
+    success: false,
     message: err,
   });
 };

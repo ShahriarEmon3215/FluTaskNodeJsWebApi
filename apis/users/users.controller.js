@@ -7,7 +7,8 @@ const {
   getUserByEmail,
 } = require("./users.services.js");
 const { genSaltSync, hash, compare } = require("bcrypt");
-const { sign } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+const { sign, verify,  } = require("jwt-blacklist")(jwt);
 
 module.exports = {
   createUser: async (req, res) => {
@@ -166,13 +167,21 @@ module.exports = {
       const isPasswordValid = await compare(body.password, user.password);
       if (isPasswordValid) {
         user.password = undefined;
-        const jsonToken = sign({ result: user }, process.env.JWT_SECRET, {
-          expiresIn: "1h", /// for limit login session
+        const accessToken = sign({ result: user }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
         });
+        const refreshToken = sign(
+          { result: user },
+          process.env.REFRESH_T_SECRET,
+          {
+            expiresIn: "7d",
+          }
+        );
         return res.status(200).json({
           success: true,
           message: "Successfully logged in",
-          token: jsonToken,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
           user: user,
         });
       } else {
@@ -182,5 +191,31 @@ module.exports = {
         });
       }
     });
+  },
+
+  refreshToken: (req, res, next) => {
+    try {
+      var refreshToken = req.body.refreshToken;
+
+      const decodedData = verify(refreshToken, process.env.REFRESH_T_SECRET);
+
+      const accessToken = sign(
+        { result: decodedData.result },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Successful",
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        user: decodedData.result,
+      });
+    } catch (ex) {
+      next("Unathorized access!");
+    }
   },
 };

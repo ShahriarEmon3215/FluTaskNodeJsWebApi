@@ -9,7 +9,7 @@ const checkLogin = (req, res, next) => {
     req.userId = id;
     next();
   } catch (ex) {
-    next("Invalid token");
+    next("Unathorized access!");
   }
 };
 
