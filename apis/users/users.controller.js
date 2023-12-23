@@ -7,8 +7,7 @@ const {
   getUserByEmail,
 } = require("./users.services.js");
 const { genSaltSync, hash, compare } = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { sign, verify,  } = require("jwt-blacklist")(jwt);
+const { sign, verify } = require("jsonwebtoken");
 
 module.exports = {
   createUser: async (req, res) => {
@@ -40,12 +39,15 @@ module.exports = {
     const id = req.params.id;
     getUserById(id, (error, result) => {
       if (error) {
-        return;
+        return res.json({
+          success: false,
+          message: error,
+        });
       }
       if (!result) {
         return res.json({
           success: false,
-          message: "empty data",
+          message: "No user found",
         });
       }
       return res.json({
@@ -76,7 +78,7 @@ module.exports = {
         message: "successfull",
         result: {
           id: result["id"],
-          username: result["username"],
+          username: result["name"],
           email: result["email"],
         },
       });

@@ -3,23 +3,22 @@ const db = require('../../config/db.js')
 module.exports = {
     create: (body, callback) => {
         db.query(
-            `insert into task(task_name, project_id, creation_date, user_id, username, status, collaboration_date) values(?,?,?,?,?,?,?)`,
-            [
-                body.task_name,
-                body.project_id,
-                body.creation_date,
-                body.user_id,
-                body.username,
-                body.status,
-                body.collaboration_date
-            ],
-            (error, result, fields) => {
-                if (error) {
-                    return callback(error, null)
-                }
-                return callback(null, result)
+          `insert into task(name, project_id, user_id, status, assigned_date, created_at) values(?,?,?,?,?,?)`,
+          [
+            body.name,
+            body.project_id,
+            body.user_id,
+            body.status,
+            body.assigned_date,
+            body.created_at,
+          ],
+          (error, result, fields) => {
+            if (error) {
+              return callback(error, null);
             }
-        )
+            return callback(null, result);
+          }
+        );
     },
 
     getTasks: (id, callback) => {
@@ -56,21 +55,15 @@ module.exports = {
 
     updateTaskCollaboration: (id, bodyData , callback) => {
         db.query(
-            `update task set user_id=?, username=?, collaboration_date=? where id=?`,
-            [
-                bodyData.user_id,
-                bodyData.username,
-                bodyData.collaboration_date,
-                id
-            ],
-            (error, result, fields) => {
-                if (error) {
-                    return callback(error)
-                }
-
-                return callback(null,  result)
+          `update task set user_id=?, username=?, assigned_date=? where id=?`,
+          [bodyData.user_id, bodyData.username, bodyData.assigned_date, id],
+          (error, result, fields) => {
+            if (error) {
+              return callback(error);
             }
 
-        )
+            return callback(null, result);
+          }
+        );
     }
 }
