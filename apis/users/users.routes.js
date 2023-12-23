@@ -1,12 +1,21 @@
-const { createUser , getUsers, getUserById, updateUser, deleteUser, login, getUserByEmail} = require('./users.controller.js')
-const router = require('express').Router()
+const {
+  createUser,
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  login,
+  getUserByEmail,
+} = require("./users.controller.js");
+const router = require("express").Router();
+const checkLogin = require("../../middlewares/checkLogin.js");
 
-router.post('/createUser', createUser)
-router.get('/getAllUsers', getUsers)
-router.get('/getUserById/:id', getUserById)
-router.post('/getUserByEmail', getUserByEmail)
-router.post('/updateUser', updateUser)
-router.post('/deleteUser', deleteUser)
-router.post('/login', login)
+router.post("/createUser", checkLogin, createUser);
+router.get("/getAllUsers", checkLogin, getUsers);
+router.get("/getUserById/:id", checkLogin, getUserById);
+router.post("/getUserByEmail", checkLogin, getUserByEmail);
+router.post("/updateUser", checkLogin, updateUser);
+router.post("/deleteUser", checkLogin, deleteUser);
+router.post("/login", login);
 
-module.exports = router
+module.exports = router;

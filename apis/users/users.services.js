@@ -33,7 +33,7 @@ module.exports = {
        
     getUsers: (callback) => {
         db.query(
-            `select id,username,email from users`,
+            `select id,name,email from users`,
             [],
             (error, result, fields) => {
                 if (error) {
@@ -139,7 +139,7 @@ module.exports = {
 
     getAllUsers: (callback)=>{
         db.query(
-            `SELECT id,username,email FROM users`,
+            `SELECT id,name,email FROM users`,
            [],
            (error, result) => {
                if (error) {
